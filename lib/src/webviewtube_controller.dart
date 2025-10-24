@@ -320,15 +320,16 @@ class WebviewtubeController extends ValueNotifier<WebviewTubeValue> {
 
   /// Seeks to a specified time in the video.
   ///
-  /// Video will play after seeking. The optional [allowSeekAhead] parameter
+  /// The optional [allowSeekAhead] parameter
   /// determines whether the player will make a new request to the server if the
   /// position is outside of the currently buffered video data.
   /// [allowSeekAhead] defaults to false.
   Future<void> seekTo(Duration position, {bool allowSeekAhead = false}) async {
-    await _callMethod('seekTo(${position.inSeconds}, $allowSeekAhead)');
+    final double seconds =
+        position.inMilliseconds / Duration.millisecondsPerSecond;
+    final seekToCall = 'seekTo($seconds,$allowSeekAhead)';
+    await _callMethod(seekToCall);
     value = value.copyWith(position: position);
-
-    await play();
   }
 
   /// Replays the video.

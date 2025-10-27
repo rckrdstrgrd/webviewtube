@@ -48,6 +48,9 @@ class _WebviewtubeDemoState extends State<WebviewtubeDemo> {
           forceHd: true, loop: true, interfaceLanguage: 'en'),
       onPlayerNavigationRequest: (uri) async {
         if (uri.host == 'www.youtube.com') {
+          if (uri.path.contains('embed')) {
+            return true;
+          }
           await launchUrl(uri, mode: LaunchMode.externalApplication);
           return false;
         }

@@ -8,6 +8,7 @@ class WebviewtubeOptions {
   /// {@macro webviewtube_options}
   const WebviewtubeOptions({
     this.showControls = true,
+    this.showFullscreenButton = true,
     this.mute = false,
     this.loop = false,
     this.forceHd = false,
@@ -26,6 +27,12 @@ class WebviewtubeOptions {
   /// Set to false if you want to use customized controls.
   /// Defaults to true.
   final bool showControls;
+
+  /// Display the YouTube video player fullscreen button.
+  ///
+  /// Set to false if you want to hide the button
+  /// Defaults to true.
+  final bool showFullscreenButton;
 
   /// Mutes the player after initialization.
   ///
@@ -98,6 +105,7 @@ class WebviewtubeOptions {
 
   WebviewtubeOptions copyWith({
     bool? showControls,
+    bool? showFullscreenButton,
     bool? mute,
     bool? loop,
     bool? forceHd,
@@ -112,6 +120,7 @@ class WebviewtubeOptions {
   }) {
     return WebviewtubeOptions(
       showControls: showControls ?? this.showControls,
+      showFullscreenButton: showFullscreenButton ?? this.showFullscreenButton,
       mute: mute ?? this.mute,
       loop: loop ?? this.loop,
       forceHd: forceHd ?? this.forceHd,
@@ -132,6 +141,7 @@ class WebviewtubeOptions {
       other is WebviewtubeOptions &&
       other.runtimeType == runtimeType &&
       other.showControls == showControls &&
+      other.showFullscreenButton == showFullscreenButton &&
       other.mute == mute &&
       other.loop == loop &&
       other.forceHd == forceHd &&
@@ -148,6 +158,7 @@ class WebviewtubeOptions {
   int get hashCode => Object.hash(
         runtimeType,
         showControls,
+        showFullscreenButton,
         mute,
         loop,
         forceHd,
@@ -165,6 +176,7 @@ class WebviewtubeOptions {
   String toString() {
     return 'WebviewtubeOptions('
         'showControls: $showControls, '
+        'showFullscreenButton: $showFullscreenButton'
         'mute: $mute, '
         'loop: $loop, '
         'forceHd: $forceHd, '

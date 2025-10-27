@@ -52,3 +52,5 @@ doc/
 pubspec.lock
 
 .fvm/
+
+example/macos/Flutter

@@ -1,0 +1,27 @@
+name: webviewtube_web
+description: Web implementation of webview_flutter plugin tailored for use with webviewtube package.
+version: 3.1.1
+repository: https://github.com/yh-luo/webviewtube
+
+environment:
+  sdk: ^3.5.0
+  flutter: '>=3.24.0'
+
+flutter:
+  plugin:
+    implements: webviewtube
+    platforms:
+      web:
+        pluginClass: WebWebviewtubePlatform
+        fileName: src/web_webviewtube_platform.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  web: ^1.1.0
+  webview_flutter_platform_interface: ^2.14.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0

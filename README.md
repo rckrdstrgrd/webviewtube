@@ -1,6 +1,6 @@
-# Play YouTube videos on mobile devices with WebView
+# Play YouTube videos on mobile and web with WebView
 
-Use [IFrame Player API](https://developers.google.com/youtube/iframe_api_reference) and WebView to play YouTube videos on mobile devices.
+Use [IFrame Player API](https://developers.google.com/youtube/iframe_api_reference) and WebView to play YouTube videos on mobile and web platforms.
 
 This package leverages [webview_flutter](https://pub.dev/packages/webview_flutter) to embed a YouTube video player through the [IFrame Player API](https://developers.google.com/youtube/iframe_api_reference). For state management, it utilizes the [provider](https://pub.dev/packages/provider) package.
 
@@ -27,6 +27,7 @@ The same as [webview_flutter](https://pub.dev/packages/webview_flutter). On Andr
 
 - Android: SDK 19+
 - iOS: 12.0+
+- Web
 
 ## Setup
 
@@ -43,6 +44,10 @@ android {
 ```
 
 ### iOS
+
+No configuration needed.
+
+### Web
 
 No configuration needed.
 

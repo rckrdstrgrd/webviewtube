@@ -459,6 +459,30 @@ String _generateIframePage(String videoId, WebviewtubeOptions options) {
 
         var player;
         var timerId;
+
+        // Detect if running on web or mobile
+        var isWeb = typeof Webviewtube === 'undefined';
+
+        // Listen for postMessage (for web platform)
+        if (isWeb) {
+            window.addEventListener('message', function(event) {
+                try {
+                    var data = JSON.parse(event.data);
+                    if (data.function) {
+                        var func = data.function.replace(/<<quote>>/g, '"');
+                        var result = eval(func);
+                        if (data.key) {
+                            var response = {};
+                            response[data.key] = result;
+                            window.parent.postMessage(JSON.stringify(response), '*');
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error handling message:', e);
+                }
+            });
+        }
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 height: '100%',
@@ -496,7 +520,12 @@ String _generateIframePage(String videoId, WebviewtubeOptions options) {
                 'method': methodName,
                 'args': argsObject
             };
-            Webviewtube.postMessage(JSON.stringify(message));
+            var messageStr = JSON.stringify(message);
+            if (isWeb) {
+                window.parent.postMessage(messageStr, '*');
+            } else {
+                Webviewtube.postMessage(messageStr);
+            }
         }
 
         function sendPlayerStateChange(playerState) {

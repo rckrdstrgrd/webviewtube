@@ -1,3 +1,14 @@
+# 3.1.1
+
+## Fixes
+
+- `WebviewtubeController` no longer handles inbound player messages after
+  `dispose()`. `dispose()` starts the JavaScript channel removal but does not
+  await it, and on web `webviewtube_web` does not implement removal at all, so
+  the iframe's `CurrentTime` messages could still arrive and write `value` on a
+  disposed `ValueNotifier` — reported on iOS/macOS as a `PigeonError` from
+  `WKScriptMessageHandler.didReceiveScriptMessage`.
+
 # 3.1.0
 
 ## Breaking Changes

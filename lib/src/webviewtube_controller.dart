@@ -51,6 +51,10 @@ class WebviewtubeController extends ValueNotifier<WebviewTubeValue> {
 
   final Completer _initCompleter = Completer();
 
+  /// Set by [dispose] before the webview teardown it starts has actually
+  /// happened, so no inbound message is handled once the notifier is dead.
+  bool _isDisposed = false;
+
   bool _isPlaylist = false;
 
   /// Additional options to control the player.
@@ -166,6 +170,17 @@ class WebviewtubeController extends ValueNotifier<WebviewTubeValue> {
   }
 
   void _onMessageReceived(JavaScriptMessage message) {
+    // The iframe keeps posting `CurrentTime` every
+    // `options.currentTimeUpdateInterval` until the webview is really gone,
+    // and [dispose] does not await the channel removal — so a message can
+    // still arrive here after the notifier has been disposed. Every handler
+    // below writes `value`, which asserts the notifier is alive; on iOS and
+    // macOS that surfaced as a `PigeonError` out of
+    // `WKScriptMessageHandler.didReceiveScriptMessage` reading
+    // "A WebviewtubeController was used after being disposed".
+    if (_isDisposed) {
+      return;
+    }
     Map<String, dynamic> json = jsonDecode(message.message);
     switch (json['method']) {
       case 'Ready':
@@ -225,6 +240,11 @@ class WebviewtubeController extends ValueNotifier<WebviewTubeValue> {
   /// This method should be called when the controller is no longer needed.
   @override
   void dispose() {
+    // Before the un-awaited cleanup below: `removeJavaScriptChannel` only
+    // takes effect after a platform round trip, and on web
+    // `webviewtube_web` does not implement it at all, so the flag is what
+    // actually stops inbound messages.
+    _isDisposed = true;
     // recommended in
     // https://github.com/flutter/flutter/issues/119616#issuecomment-1419991144
     _webViewController
